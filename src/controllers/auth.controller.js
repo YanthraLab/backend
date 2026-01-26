@@ -12,7 +12,7 @@ const signup = async (req, res, next) => {
       success: true,
       message: "User registered successfully",
       user: {
-        id: user._id,
+        id: user.id || user._id,
         email: user.email,
         name: user.name,
         role: user.role,
@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
     res.json({
       success: true,
       user: {
-        id: user._id,
+        id: user.id || user._id,
         email: user.email,
         role: user.role,
       },

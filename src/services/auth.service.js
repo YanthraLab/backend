@@ -31,7 +31,7 @@ const signup = async (userData) => {
 
 const login = async ({ email, password, rememberMe }) => {
   console.log("Auth Service - Login called with:", { email, rememberMe }); // Debugging line
-  const user = await User.findOne({ email }).select("+password +refreshToken");
+  const user = await User.findOne({ email });
 
   if (!user) {
     throw new AppError("Invalid email or password", 401);
@@ -44,8 +44,8 @@ const login = async ({ email, password, rememberMe }) => {
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user, rememberMe);
 
-  user.refreshToken = refreshToken;
-  await user.save();
+  // Update user's refresh token
+  await User.updateOne({ id: user.id }, { refreshToken });
 
   return { user, accessToken, refreshToken, rememberMe };
 };
